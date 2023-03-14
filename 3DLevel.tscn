@@ -3,18 +3,20 @@
 [ext_resource type="Script" path="res://Player.gd" id="1_loe3q"]
 [ext_resource type="Script" path="res://CameraJoint.gd" id="2_efccx"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2oq16"]
-sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
-ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vmr6p"]
+sky_top_color = Color(0.384314, 0.454902, 0.54902, 1)
+sky_horizon_color = Color(0.396078, 0.701961, 0.823529, 1)
 
-[sub_resource type="Sky" id="Sky_lv4og"]
-sky_material = SubResource("ProceduralSkyMaterial_2oq16")
+[sub_resource type="Sky" id="Sky_trkas"]
+sky_material = SubResource("ProceduralSkyMaterial_vmr6p")
 
-[sub_resource type="Environment" id="Environment_767sv"]
+[sub_resource type="Environment" id="Environment_k6ydd"]
 background_mode = 2
-sky = SubResource("Sky_lv4og")
+sky = SubResource("Sky_trkas")
 tonemap_mode = 2
 glow_enabled = true
+fog_light_color = Color(0.270588, 0.462745, 0.694118, 1)
+volumetric_fog_density = 0.02
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_xjsed"]
 size = Vector2(60, 60)
@@ -35,12 +37,13 @@ size = Vector3(5, 5, 5)
 
 [node name="Node3D" type="Node3D"]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_767sv")
-
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.705872, 0.495599, -0.506089, 0, 0.714473, 0.699663, 0.70834, 0.493872, -0.504326, 0, 0, 0)
+transform = Transform3D(-0.748956, 0.0945088, -0.655846, 0, 0.989776, 0.142629, 0.66262, 0.106823, -0.741299, 0, 0, 0)
+light_color = Color(0.701961, 0.184314, 0, 1)
 shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_k6ydd")
 
 [node name="Floor" type="MeshInstance3D" parent="."]
 mesh = SubResource("PlaneMesh_xjsed")

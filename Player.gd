@@ -4,6 +4,7 @@ extends CharacterBody3D
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
+var CamDepth := 7
 var FirstPerson = false
 
 
@@ -24,8 +25,12 @@ func _physics_process(delta):
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
-	var input_dir = Input.get_vector("left", "right", "forward", "back")
-	var direction = (_spring_arm.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	var direction = Vector3.ZERO
+	#var input_dir = Input.get_vector("left", "right", "forward", "back")
+	direction.x = Input.get_action_strength("right") - Input.get_action_strength("left")
+	direction.z = Input.get_action_strength("back") - Input.get_action_strength("forward")
+	direction = direction.rotated(Vector3.UP, _spring_arm.rotation.y).normalized()
+	#var direction = (_spring_arm.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
@@ -38,13 +43,13 @@ func _physics_process(delta):
 		var look_direction = Vector2(velocity.z, velocity.x)
 		_model.rotation.y = look_direction.angle()
 	
-	if Input.is_action_just_pressed("SwitchCam"):
-		if FirstPerson:
-			_spring_arm.spring_length = 7
-			FirstPerson = false
-		else:
-			_spring_arm.spring_length = 0.0
-			FirstPerson = true
-			
+	if Input.is_action_just_released("CameraIN") && CamDepth > 0:
+		_spring_arm.spring_length += -1
+		CamDepth += -1
+	
+	if Input.is_action_just_released("CameraOUT") && CamDepth <= 7:
+		_spring_arm.spring_length += 1
+		CamDepth += 1
+		
 func _process(_delta: float):
 	_spring_arm.position = position
